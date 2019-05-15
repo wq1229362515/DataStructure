@@ -1,0 +1,143 @@
+
+
+//环形链表1 :求链表是否有环
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+bool hasCycle(struct ListNode *head) {
+    struct ListNode *FastNode = NULL;
+    struct ListNode *SlowNode = NULL;
+    int count = 2;
+    if(head == NULL || head->next == NULL) {
+        return false;
+    }
+    FastNode = head->next;
+    SlowNode = head;
+    while(FastNode && FastNode->next) {
+        if(SlowNode == FastNode) {
+            return true;
+        }
+        SlowNode = SlowNode ->next;
+        FastNode = FastNode->next->next;
+    }
+    return false;
+}
+
+
+
+
+//环形链表2:链表入环口
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+struct ListNode *detectCycle(struct ListNode *head) {
+    struct ListNode *FastNode = NULL;
+    struct ListNode *SlowNode = NULL;
+    if(head == NULL) {
+        return NULL;
+    }
+    FastNode = head;
+    SlowNode = head;
+    while(FastNode &&FastNode ->next) { 
+        SlowNode = SlowNode->next;
+        FastNode = FastNode->next->next;
+        if(SlowNode == FastNode){
+            struct ListNode *Tmp = head;
+            while(Tmp != FastNode) {
+                Tmp = Tmp->next;
+                FastNode = FastNode->next;
+            }
+            return Tmp;
+        }
+    }
+    return NULL;
+}
+
+
+
+
+//随机空间链表
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+
+    Node() {}
+
+    Node(int _val, Node* _next, Node* _random) {
+        val = _val;
+        next = _next;
+        random = _random;
+    }
+};
+*/
+Node *BuyNode(int val) {
+    Node *pNewNode =(Node *)malloc(sizeof(Node));
+    if(pNewNode == NULL) {
+        assert(0);
+    }
+    pNewNode->val = val;
+    pNewNode->next = NULL;
+    pNewNode->random = NULL;
+    return pNewNode;
+}
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        Node *Pcur1 = NULL;
+        if(head == NULL) {
+            return NULL;
+        }
+        Pcur1 = head;
+        //第一步先复制链表一份,再连接
+        while(Pcur1) {
+            Node *pNewNode = BuyNode(Pcur1->val);
+            pNewNode->next = Pcur1->next;
+            Pcur1->next = pNewNode;
+            Pcur1 = pNewNode -> next;           
+        }
+        //第二步复制random
+        Pcur1 = head;
+        while(Pcur1) {
+            Node *Pcur2 = Pcur1->next;
+            if(Pcur1->random == NULL) {
+                Pcur2->random = NULL;
+            }
+            else {
+                Pcur2->random = Pcur1->random->next;
+            }
+            Pcur1 = Pcur2->next;  
+        }
+        //第三步拆链表
+        Pcur1  = head;
+        Node *pNewHead = head->next;
+        while(Pcur1) {
+            Node *Pcur2 = Pcur1->next;
+            Pcur1->next = Pcur2->next;
+            /*
+            Pcur1->next = Pcur2->next;
+            if( Pcur2->next != NULL) {
+                Pcur2->next = Pcur2->next->next;
+            }
+            Pcur1 = Pcur1->next;
+            */
+            Pcur1 = Pcur2->next;
+            if(Pcur1 == NULL) {
+                Pcur2->next = NULL;
+            }
+            else Pcur2->next = Pcur1->next;
+        }
+        return pNewHead;     
+    }
+};
