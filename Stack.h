@@ -16,3 +16,4 @@ void StackPop(StackNode *Stack);
 Datadype StackTop(StackNode *Stack);
 int Stackempty(StackNode *Stack);
 void StackDestroy(StackNode *Stack);
+int  StackSize(StackNode *Stack);
