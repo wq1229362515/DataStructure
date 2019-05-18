@@ -3,67 +3,67 @@
 #include<malloc.h>
 #include <assert.h>
 
-void Stackininit(StackNode *Stack ){	
-	assert(Stack);
-	Stack->arr = (Datadype*)malloc (sizeof(Datadype)*5);
-	if(Stack->arr ==NULL){
+void StackInit(Stack *ps ){	
+	assert(ps);
+	ps->arr = (SDataType*)malloc (sizeof(SDataType)*5);
+	if(ps->arr ==NULL){
 		assert(0);
 		return;
 	}
-	Stack->capacity = 5;
-	Stack->top = 0;
+	ps->capacity = 5;
+	ps->top = 0;
 }
-void StackPush (StackNode *Stack,Datadype data){
-	assert(Stack);
-	if(Stack->top == Stack->capacity){
-		int Newcapacity = 2*Stack->capacity;
+void StackPush (Stack *ps,SDataType data){
+	assert(ps);
+	if(ps->top == ps->capacity){
+		int Newcapacity = 2*ps->capacity;
 		int i;
-		Datadype *NewStack;
-		NewStack = (Datadype *)malloc(sizeof(Datadype)*Newcapacity);
-		for(i = 0;i<Stack->top;i++){
-			NewStack[i] = Stack->arr[i];
+		SDataType *NewStack;
+		NewStack = (SDataType *)malloc(sizeof(SDataType)*Newcapacity);
+		for(i = 0;i<ps->top;i++){
+			NewStack[i] = ps->arr[i];
 		}
-		free(Stack->arr);
-		Stack->arr = NewStack;
-		Stack->capacity = Newcapacity;
+		free(ps->arr);
+		ps->arr = NewStack;
+		ps->capacity = Newcapacity;
 	}		
-	
-	Stack->arr[Stack->top] = data;	
-	Stack->top++;
+
+	ps->arr[ps->top] = data;	
+	ps->top++;
 }
-void StackPop(StackNode *Stack){
-	assert(Stack);
-	if(Stackempty (Stack)){
+void StackPop(Stack *ps){
+	assert(ps);
+	if(StackEmpty (ps)){
 		return ;
 	}
-	Stack->top--;
+	ps->top--;
 
 }
-Datadype StackTop(StackNode *Stack) {
-	assert(Stack);
-	return Stack->arr[Stack->top-1];
+SDataType StackTop(Stack *ps) {
+	assert(ps);
+	return ps->arr[ps->top-1];
 }
-int Stackempty(StackNode *Stack){
-	assert(Stack);
-	return 0 == Stack->top;
+int StackEmpty(Stack *ps){
+	assert(ps);
+	return 0 == ps->top;
 }
-int StackSize(StackNode *Stack){
-	assert(Stack);
-	return Stack->top;
+int StackSize(Stack *ps){
+	assert(ps);
+	return ps->top;
 }
-void StackDestroy(StackNode *Stack) {
-	assert(Stack);
-	if(Stack->arr){
-		free(Stack->arr);
-		Stack->top = 0;
-		Stack->capacity = 0;
+void StackDestroy(Stack *ps) {
+	assert(ps);
+	if(ps->arr){
+		free(ps->arr);
+		ps->top = 0;
+		ps->capacity = 0;
 	}
-	
-	
+
+
 }
 void TestStack (){
-	StackNode ps;
-	Stackininit (&ps);
+	Stack ps;
+	StackInit (&ps);
 	StackPush(&ps,1);
 	StackPush(&ps,2);
 	//StackPop(&ps);
@@ -76,7 +76,7 @@ void TestStack (){
 	StackPop (&ps);
 	printf("%d\n",StackTop(&ps));
 	printf("%d\n",StackSize (&ps));
-	printf("%d\n",Stackempty (&ps));
+	printf("%d\n",StackEmpty (&ps));
 	StackDestroy(&ps);
 }
 int main (){

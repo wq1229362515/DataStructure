@@ -1,19 +1,19 @@
 #pragma  once
 
-typedef int Datadype;
+typedef int SDataType;
 
-typedef struct stackNode {
-	Datadype *arr;
+typedef struct Stack {
+	SDataType *arr;
 	int top;
 	int capacity;
-}StackNode;
+}Stack;
 
 
 
-void Stackininit(StackNode *Stack );
-void StackPush (StackNode *Stack,Datadype data);
-void StackPop(StackNode *Stack);
-Datadype StackTop(StackNode *Stack);
-int Stackempty(StackNode *Stack);
-void StackDestroy(StackNode *Stack);
-int  StackSize(StackNode *Stack);
+void StackInit(Stack *ps );
+void StackPush (Stack *ps,SDataType data);
+void StackPop(Stack *ps);
+SDataType StackTop(Stack *ps);
+int StackEmpty(Stack *ps);
+void StackDestroy(Stack *ps);
+int  StackSize(Stack *ps);
