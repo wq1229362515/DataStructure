@@ -9,10 +9,10 @@ void Swap(int *parent,int * child){
 }
 void AdjustDown(HPDataType *arr, int parent, int size){
 	int child = 2 * parent + 1;
+	if (arr[child] > arr[parent]){
+		return;
+	}
 	while (child < size){
-		if (arr[parent]<arr[child]){
-			return;
-		}
 		if (child+1<size && arr[child]>arr[child + 1]){
 			child = child + 1;
 		}
