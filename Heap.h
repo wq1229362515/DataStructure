@@ -5,6 +5,7 @@ typedef int HPDataType;
 
 
 
+
 typedef struct Heap {
 	HPDataType* arr;
 	int _size;
@@ -19,6 +20,8 @@ void HeapPop(Heap *hp);
 HPDataType HeapTop(Heap *hp);
 int HeapSize(Heap *hp);
 int EmptySize(Heap *hp);
+
+
 
 
 void HeapSort(int *arr,int size);

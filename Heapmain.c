@@ -8,6 +8,8 @@ void Swap(int *parent,int * child){
 	*parent = *child;
 	*child = temp;
 }
+
+
 void AdjustDown(HPDataType *arr, int parent, int size){
 	int child = 2 * parent + 1;
 	if (arr[child] > arr[parent]){
@@ -22,6 +24,23 @@ void AdjustDown(HPDataType *arr, int parent, int size){
 			parent = child;
 			child = 2 * parent + 1;
 		}
+		else {
+			return;
+		}
+	}
+}
+
+//插入用的是向上调整
+//建立在已经建立堆的前提下
+void AdjustUp(HPDataType *arr, int child, int size){
+	int parent = (child - 1) / 2;
+	while (child){
+		if (arr[parent] > arr[child]){
+			Swap(&arr[parent], &arr[child]);
+			child = parent;
+			parent = (child - 1) / 2;
+		}
+		else return;
 	}
 }
 void  HeapInit(Heap *hp, HPDataType *arr, int size){
@@ -33,8 +52,11 @@ void  HeapInit(Heap *hp, HPDataType *arr, int size){
 		hp->arr[i] = arr[i];
 		hp->_size++;
 	}
-	int parent = 0;	//传入根节点
-	AdjustDown(hp->arr, parent, size);
+	//向下调整法
+	int root = (size - 2) / 2;
+	for (; root >= 0; root--){
+		AdjustDown(hp->arr,root, size);
+	}
 }
 void HeapDerstory(Heap *hp){
 	assert(hp);
@@ -54,29 +76,19 @@ void CheckCapacity(Heap *hp){
 		hp->arr = temp;
 	}
 }
-//从下往上比较遍历
+
 void HeapPush(Heap *hp, HPDataType data){
-	int child = hp->_size;                               //创建子节点
-	int parent =(child - 1)/2;
-	assert(hp);
 	CheckCapacity(hp);
 	hp->arr[hp->_size] = data;
-	while (child){
-		if (hp->arr[child] >= hp->arr[parent]){
-			hp->_size++;
-			return;
-		}
-		else {
-			Swap(&hp->arr[child], &hp->arr[parent]);
-			child = parent;
-			parent = (parent - 1) / 2;
-		}
-	}
 	hp->_size++;
+	AdjustUp(hp->arr, hp->_size-1,hp->_size);
+
 }
 void HeapPop(Heap *hp){
-	assert(hp);
-	hp->arr[0] = hp->arr[hp->_size-1];
+	if (EmptySize(hp)){
+		return;
+	}
+	Swap(&hp->arr[0], &hp->arr[hp->_size - 1]);
 	hp->_size--;
 	AdjustDown(hp->arr, 0, hp->_size);
 	/*system("pause");*/
@@ -92,22 +104,30 @@ int EmptySize(Heap *hp){
 }
 void  HeapAdjust(int *arr, int parent, int size){
 	int child = 2 * parent + 1;
+	//比较左右两个孩子
 	while (child < size){
 		if (child + 1 < size&&arr[child + 1] > arr[child]){
 			child = child + 1;
 		}
+		//和父节点比较,如果大于那么交换,再次向下比较,如果小于说明这个堆是一个大堆
+		//返回执行下一个
 		if (arr[child]>arr[parent]){
 			Swap(&arr[child], &arr[parent]);
+			parent = child;
+			child = 2 * parent + 1;
 		}
-		parent = child;
-		child = 2 * parent + 1;
+		else return;
 	}
 }
 void HeapMake(int *arr,int size){
-	for (int i = size / 2 - 1; i >= 0; i--){
-		HeapAdjust(arr,i,size);
+	//传进去的是下标,依次倒着调整最后一个非叶子节点
+	for (int root = (size -2)/ 2 ; root >= 0; root--){
+		HeapAdjust(arr,root,size);
 	}
 }
+
+
+
 
 
 void HeapSort(int *arr, int size){
@@ -119,6 +139,7 @@ void HeapSort(int *arr, int size){
 		//最大的和最后一个数字调换
 		Swap(&arr[0], &arr[size-1]);
 		//从上开始调整,因为已经排成了我们要求的堆序
+		//size的长度要减一
 		HeapAdjust(arr, 0, size - 1);
 	}
 	//system("pause");
@@ -142,8 +163,7 @@ void TestHeap2(){
 	}
 }
 int main(){
-
-	/*TestHeap();*/
-	TestHeap2();
+	TestHeap();
+	/*TestHeap2();*/
 	return 0;
 }
