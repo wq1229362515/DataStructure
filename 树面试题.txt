@@ -1,0 +1,59 @@
+
+//前序遍历
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+//将二叉树中每个节点值域保存到一段连续的空间中
+
+
+
+//Res  保存Root的值域,有多少个空间
+//Size 有多少个节点
+
+
+typedef struct TreeNode Node;
+void preOrder(Node *Root,int *pRes,int * index){
+    if(Root){
+        
+        //遍历根节点      
+        pRes[*index] = Root->val;
+        (*index)++;
+        
+        //遍历左子树
+        preOrder(Root->left,pRes,index);
+        
+        
+        //遍历右子树
+        preOrder(Root->right,pRes,index);
+    }    
+}
+
+int GetTreeSize(Node* Root){
+    if(Root == NULL) {
+        return 0;
+    }
+    return GetTreeSize(Root->left)+GetTreeSize(Root->right)+1;
+}
+
+int* preorderTraversal(struct TreeNode* root, int* returnSize){
+    //returnSize 节点个数
+    *returnSize = GetTreeSize(root);
+    int *Res = (int*)malloc(sizeof(int)*(*returnSize));
+    if(Res == NULL) {
+        assert(0);
+    }
+    int index = 0;
+    preOrder(root,Res,&index);
+    
+    return Res;
+}
