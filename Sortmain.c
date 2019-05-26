@@ -30,9 +30,54 @@ void  InsertSort(int *arr, int size){
 	}
 }
 
+void  Swap(int *a, int *b){
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+}
+//升序
+void BubbleSort(int *arr, int size){
+	for (int i = 0; i < size - 1; i++){
+		for (int j = 0; j < size - i -1; j++){
+			if (arr[j]>arr[j+1]){
+				Swap(&arr[j], &arr[j+1]);
+			}
+		}
+	}
+}
+
+void  MakeHeap(int *arr, int parent, int size){
+	int child = 2 * parent + 1;
+	while (child < size){
+		if (child + 1 < size && arr[child + 1] > arr[child]){
+			child = child + 1;
+		}
+		if (arr[parent] < arr[child]){
+			Swap(&arr[parent], &arr[child]);
+			parent = child;
+			child = 2 * parent + 1;
+		}
+		else return;
+	}
+}
+
+
+void HeapSort(int *arr, int size){
+	//建立堆,建立一个大堆
+	for (int root = (size - 2) / 2; root >= 0; root--){
+		MakeHeap(arr,root, size);
+	}
+	//调换收尾
+	for (; size >= 1; size--){
+		Swap(&arr[0], &arr[size - 1]);
+		MakeHeap(arr, 0, size-1);
+	}
+}
 int main(){
 	int  arr[] = { 3, 5, 6, 1, 2, 7, 0, 9, 8, 4 };
-	InsertSort(arr, sizeof(arr) / sizeof(arr[0]));
+	/*InsertSort(arr, sizeof(arr) / sizeof(arr[0]));*/
+	/*BubbleSort(arr, sizeof(arr)/sizeof(arr[0]));*/
+	HeapSort(arr, sizeof(arr) / sizeof(arr[0]));
 	PrintArr(arr, sizeof(arr) / sizeof(arr[0]));
 	return 0;
 }
