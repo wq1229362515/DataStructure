@@ -25,8 +25,9 @@ void  InsertSort(int *arr, int size){
 		//改成key <= arr[end],就是非稳定排序了
 		while (end >= 0 && key < arr[end]){
 			arr[end + 1] = arr[end];
-			arr[end--] = key;
+			end--;
 		}
+		arr[end+1] = key;
 	}
 }
 
@@ -73,11 +74,28 @@ void HeapSort(int *arr, int size){
 		MakeHeap(arr, 0, size-1);
 	}
 }
+void ShellSort(int *arr, int size){
+	int gap = 3;
+	while (gap--){
+		for (int i = 1; i < size; i++){
+			int key = arr[i];
+			int end = i - 1;
+			while(end >= 0 && arr[end] > key){
+				arr[end + 1] = arr[end];
+				end--;
+			}
+			arr[end + 1] = key;
+		}
+	}
+}
+void ChooseSort(int *arr, int size);
+
+void QuickSort(int *arr, int size);
 int main(){
 	int  arr[] = { 3, 5, 6, 1, 2, 7, 0, 9, 8, 4 };
-	/*InsertSort(arr, sizeof(arr) / sizeof(arr[0]));*/
+	InsertSort(arr, sizeof(arr) / sizeof(arr[0]));
 	/*BubbleSort(arr, sizeof(arr)/sizeof(arr[0]));*/
-	HeapSort(arr, sizeof(arr) / sizeof(arr[0]));
+	/*HeapSort(arr, sizeof(arr) / sizeof(arr[0]));*/
 	PrintArr(arr, sizeof(arr) / sizeof(arr[0]));
 	return 0;
 }
