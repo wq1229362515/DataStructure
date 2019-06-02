@@ -346,6 +346,42 @@ void MergeSortNor(int *arr,int size){
 	}
 	free(temp);
 }
+//非比较排序
+
+//统计区间里面元素的个数
+//排序
+//借助数组下标回收
+void CountSort(int  *arr, int size){
+	int minvalue = arr[0];
+	int maxvalue = arr[0];
+	//找数据范围
+	for (int i = 1; i < size; i++){
+		if (arr[i]>maxvalue){
+			maxvalue = arr[i];
+		}
+		if (arr[i] < minvalue){
+			minvalue = arr[i];
+		}
+	}
+	//统计每个元素出现的次数
+	//范围
+	int range = maxvalue - minvalue + 1;
+	int * Pcount = (int *)malloc(sizeof(int)*range);
+	memset(Pcount, 0, sizeof(int)*range);
+	for (int i = 0; i < size; i++){
+		Pcount[arr[i] - minvalue]++;
+	}
+	int index = 0;
+	for (int i = 0; i < range; i++){
+
+		while (Pcount[i]--){
+			arr[index++] = i + minvalue;
+		}
+	}
+	free(Pcount);
+}
+
+
 int main(){
 	int  arr[] = { 3, 5, 6, 1, 2, 7, 0, 9, 8, 4 };
 	//InsertSort(arr, sizeof(arr) / sizeof(arr[0]));
@@ -357,7 +393,8 @@ int main(){
 	//QuickSort(arr, sizeof(arr) / sizeof(arr[0]));
 	//QuickSortNor(arr, sizeof(arr) / sizeof(arr[0]));
 	//MergeSort(arr, sizeof(arr) / sizeof(arr[0]));
-	MergeSortNor(arr, sizeof(arr) / sizeof(arr[0]));
+	//MergeSortNor(arr, sizeof(arr) / sizeof(arr[0]));
+	CountSort(arr, sizeof(arr) / sizeof(arr[0]));
 	PrintArr(arr, sizeof(arr) / sizeof(arr[0]));
 	return 0;
 }
