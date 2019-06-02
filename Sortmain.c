@@ -346,11 +346,9 @@ void MergeSortNor(int *arr,int size){
 	}
 	free(temp);
 }
+//非比较排序主要用在数多集中的场合
 //非比较排序
-
-//统计区间里面元素的个数
-//排序
-//借助数组下标回收
+//首先要找出数组的范围,然后做差
 void CountSort(int  *arr, int size){
 	int minvalue = arr[0];
 	int maxvalue = arr[0];
@@ -366,8 +364,12 @@ void CountSort(int  *arr, int size){
 	//统计每个元素出现的次数
 	//范围
 	int range = maxvalue - minvalue + 1;
+	//开辟空间去存储
 	int * Pcount = (int *)malloc(sizeof(int)*range);
 	memset(Pcount, 0, sizeof(int)*range);
+	//统计元素出现的次数,通过i的增加,其实是遍历了arr数组,通过遍历数组
+	//统计出了元素的个数  arr[i] = minvalue ;
+
 	for (int i = 0; i < size; i++){
 		Pcount[arr[i] - minvalue]++;
 	}
@@ -375,6 +377,7 @@ void CountSort(int  *arr, int size){
 	for (int i = 0; i < range; i++){
 
 		while (Pcount[i]--){
+			//加i就会恢复到原来的数字上
 			arr[index++] = i + minvalue;
 		}
 	}
